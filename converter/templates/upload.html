@@ -14,14 +14,17 @@
 		<button type="submit" class="btn btn-default">Upload</button>
 	</form>
 
-	{% if pages %}
-	<h1 class="my-4 text-center text-lg-left">{{ pages|length }} Pages</h1>	
+	{% if data %}
+	<h1 class="my-4 text-center text-lg-left">{{ data|length }} Pages</h1>	
 	<div class="row text-center text-lg-left">
-		{% for page in pages %}
+		{% for image in data %}
 		<div class="col-lg-3 col-md-4 col-xs-6">
-			<a href="/media/output/page-{{ page }}.jpg" class="d-block mb-4 h-100">
-				<img class="img-fluid img-thumbnail" src="/media/output/page-{{ page }}.jpg" alt="">
-			</a>
+			<div class="d-block mb-4 h-100">
+				<a href="{{ image.url }}">
+					<img class="img-fluid img-thumbnail" src="{{ image.url }}" alt="">
+				</a>
+				<textarea class="form-control" id="exampleFormControlTextarea1" rows="3">{{ image.text }}</textarea>
+			</div>
 		</div>
 		{% endfor %}
 	</div>

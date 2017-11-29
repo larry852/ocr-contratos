@@ -7,17 +7,20 @@ from google.cloud import vision
 
 def index(request):
     if request.method == 'POST' and request.FILES['pdf']:
+        data = []
         pdf = request.FILES['pdf']
         fs = FileSystemStorage()
         filename = fs.save('input/' + pdf.name, pdf)
         # Convert pdf to image
+        print("Conversion pdf a imagen")
         pages = convert(filename)
         # Get OCR
         for page in range(pages):
-            extractOCR('page-{}.jpg'.format(page))
-
+            ocr = {'url': '/media/output/page-{}.jpg'.format(page), 'text': extractOCR('page-{}.jpg'.format(page))}
+            data.append(ocr)
+            print("Extraccion texto de pagina " + str(page))
         return render(request, 'upload.html', {
-            'pages': range(pages)
+            'data': data
         })
 
     return render(request, 'upload.html')
@@ -39,13 +42,8 @@ def getBase64(filename):
 
 
 def extractOCR(filename):
-    """Detects text in the file."""
-    client = vision.ImageAnnotatorClient()
+    client = vision.Client()
     with open('media/output/' + filename, 'rb') as image_file:
-        content = image_file.read()
-    image = vision.types.Image(content=content)
-    response = client.text_detection(image=image)
-    texts = response.text_annotations
-    print('Texts:')
-    for text in texts:
-        print('\n"{}"'.format(text.description))
+        image = client.image(content=image_file.read())
+    texts = image.detect_text()
+    return texts[0].description
