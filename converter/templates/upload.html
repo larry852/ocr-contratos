@@ -3,27 +3,29 @@
 {% load static %}
 
 {% block content %}
-	<!-- Page Content -->
-	<div class="container">
-
-	<form method="post" enctype="multipart/form-data">
+<!-- Page Content -->
+<div class="container">
+	<br>
+	<form class="form-inline" role="form" method="post" enctype="multipart/form-data">
 		{% csrf_token %}
-		<input type="file" name="pdf" required="">
-		<button type="submit">Upload</button>
+		<div class="form-group">
+			<input type="file" class="form-control" name="pdf" required="">
+		</div>
+		<button type="submit" class="btn btn-default">Upload</button>
 	</form>
 
-	<h1 class="my-4 text-center text-lg-left">Paginas</h1>
-
-	
+	{% if pages %}
+	<h1 class="my-4 text-center text-lg-left">{{ pages|length }} Pages</h1>	
 	<div class="row text-center text-lg-left">
-	{% for page in pages %}
+		{% for page in pages %}
 		<div class="col-lg-3 col-md-4 col-xs-6">
 			<a href="#" class="d-block mb-4 h-100">
 				<img class="img-fluid img-thumbnail" src="/media/output/page-{{ page }}.jpg" alt="">
 			</a>
 		</div>
-	{% endfor %}
+		{% endfor %}
 	</div>
+	{% endif %}
 	<!-- /.container -->
 
 
