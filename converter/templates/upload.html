@@ -14,16 +14,23 @@
 		<button type="submit" class="btn btn-default">Upload</button>
 	</form>
 
-	{% if data %}
-	<h1 class="my-4 text-center text-lg-left">{{ data|length }} Pages</h1>	
+	{% if not context %}
+		<img src="{% static "loading.gif" %}">
+	{% endif %}
+	
+	{% if context %}
+	<h1 class="my-4 text-center text-lg-left">{{ context|length }} Pages</h1>	
 	<div class="row text-center text-lg-left">
-		{% for image in data %}
+		{% for page in context %}
 		<div class="col-lg-3 col-md-4 col-xs-6">
 			<div class="d-block mb-4 h-100">
-				<a href="{{ image.url }}">
-					<img class="img-fluid img-thumbnail" src="{{ image.url }}" alt="">
+				<a href="{{ page.url }}">
+					<img class="img-fluid img-thumbnail" src="{{ page.url }}" alt="">
 				</a>
-				<textarea class="form-control" id="exampleFormControlTextarea1" rows="3">{{ image.text }}</textarea>
+				<textarea class="form-control" id="exampleFormControlTextarea1" rows="6">{{ page.text }}</textarea>
+				{% for number in page.nit %}
+					<li>NIT: {{ number }}</li>
+				{% endfor %}
 			</div>
 		</div>
 		{% endfor %}
