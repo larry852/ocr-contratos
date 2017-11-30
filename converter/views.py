@@ -57,7 +57,7 @@ def index(request):
 
 def convert(filename, resolution=300):
     pages = 0
-    with Image(filename='media/' + filename, resolution=resolution) as img:
+    with Image(filename='media/' + filename) as img:
         img.save(filename="media/output/page.jpg")
         pages = len(img.sequence)
     return pages
