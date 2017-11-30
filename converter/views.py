@@ -55,7 +55,7 @@ def index(request):
     return render(request, 'upload.html')
 
 
-def convert(filename, resolution=300):
+def convert(filename, resolution=400):
     pages = 0
     with Image(filename='media/' + filename, resolution=resolution) as img:
         img.save(filename="media/output/page.jpg")
