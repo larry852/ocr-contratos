@@ -77,8 +77,12 @@ WSGI_APPLICATION = 'contratos.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'd4hasm83kirslh',
+        'USER': 'tcokcbkxmhbftc',
+        'PASSWORD': '71b8bbc0eb3d9750b10489ee133f82ab9d7e39b120be39b9cc5fc892df565364',
+        'HOST': 'ec2-107-20-176-7.compute-1.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
