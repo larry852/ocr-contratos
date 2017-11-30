@@ -6,6 +6,7 @@ from google.cloud import vision
 from google.cloud import language
 import six
 import re
+from difflib import SequenceMatcher
 
 
 def index(request):
@@ -22,11 +23,28 @@ def index(request):
             print("Procesando pagina " + str(page))
             text = extractOCR('page-{}.jpg'.format(page))
             numbers = syntax_text(text)
+
+            numbers_clausula = []
+            numeral = []
+            str_clausula_dia_habil = clausula_dia_habil(text)
+            if str_clausula_dia_habil is not None:
+                numbers_clausula = syntax_text(str_clausula_dia_habil)
+                for number in numbers_clausula:
+                    if is_numeral(number):
+                        numeral.append(number)
+                if not numeral:
+                    numeral.append('No detectado')
+
             nit = []
             for number in numbers:
                 if is_nit(number):
                     nit.append(number)
-            data = {'url': '/media/output/page-{}.jpg'.format(page), 'text': text, 'nit': nit}
+            if not nit:
+                for number in numbers:
+                    if is_nit_2(number):
+                        print(number)
+                        nit.append(number)
+            data = {'url': '/media/output/page-{}.jpg'.format(page), 'text': text, 'nit': nit, 'numeral': numeral}
             context.append(data)
             # print("Extraccion entidades")
             # entities_text(ocr['text'])
@@ -121,5 +139,34 @@ def syntax_text(text):
 
 
 def is_nit(nit):
-    patron = re.compile('([0-9]{3})\.([0-9]{3})\.([0-9]{3})+')
+    patron = re.compile('([0-9]{3})([\.,;:-])([0-9]{3})([\.,;:-])([0-9]{3})+')
     return patron.match(nit)
+
+
+def is_nit_2(nit):
+    patron = re.compile('^([0-9]{9})$')
+    return patron.match(nit)
+
+
+def is_numeral(numeral):
+    patron = re.compile('([0-9]{1,2})([\.,;:-])([0-9]{1,2})([\.,;:-])([0-9]{1,2})+')
+    return patron.match(numeral)
+
+
+def clausula_dia_habil(text):
+    text = clean_string(text)
+    if 'clausula 3. acuerdo de dia habil\n' in text:
+        start = text.find('clausula 3. acuerdo de dia habil\n')
+        end = text.find('clausula 4. compensacion\n')
+        return text[start:end]
+
+
+def clean_string(string):
+    return string.lower().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace('ú', "u")
+
+
+def similar(text1, text2):
+    if SequenceMatcher(None, text1, text2).ratio() > 0.7:
+        return True
+    else:
+        return False
