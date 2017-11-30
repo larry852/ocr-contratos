@@ -42,7 +42,6 @@ def index(request):
             if not nit:
                 for number in numbers:
                     if is_nit_2(number):
-                        print(number)
                         nit.append(number)
             data = {'url': '/media/output/page-{}.jpg'.format(page), 'text': text, 'nit': nit, 'numeral': numeral}
             context.append(data)
