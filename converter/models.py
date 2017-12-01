@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+
+class Document(models.Model):
+    nit = models.CharField(max_length=15, default='No detect')
+    file = models.ImageField(upload_to='input')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
