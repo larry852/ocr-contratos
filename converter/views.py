@@ -1,10 +1,15 @@
 from django.shortcuts import render
 from .models import Document
 from . import utils, google
+from django.shortcuts import get_object_or_404
 
 
-def index(request):
-    if request.method == 'POST' and request.FILES['pdf']:
+def index(request, document=None):
+    if document:
+        # Get PDF file from DB
+        document = get_object_or_404(Document, pk=document)
+        request.method = 'POST'
+    else:
         # Get PDF file from form
         pdf = request.FILES['pdf']
 
@@ -12,6 +17,7 @@ def index(request):
         document = Document(file=pdf)
         document.save()
 
+    if request.method == 'POST':
         # Get path of document
         path = document.file.path
 
