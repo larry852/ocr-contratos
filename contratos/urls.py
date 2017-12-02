@@ -18,6 +18,10 @@ from django.contrib import admin
 from django.views.static import serve
 from . import settings
 
+admin.site.site_header = 'ContratoMarco Administration'
+admin.site.site_title = 'ContratoMarco Administration'
+
+
 urlpatterns = [
     url(r'^', include('converter.urls')),
     url(r'^admin/', admin.site.urls),
