@@ -8,15 +8,15 @@ def convert(path, resolution=400):
     # Convert PDF file to image file, generate an image for each page
     pages = 0
     with Image(filename=path, resolution=resolution) as img:
-        img.save(filename="media/output/page.jpg")
+        img.save(filename='media/output/page.jpg')
         pages = len(img.sequence)
     return pages
 
 
 def get_Base64(filename):
     # Encode image file to base64
-    encoded_string = ""
-    with open('media/output/' + filename, "rb") as image_file:
+    encoded_string = ''
+    with open('media/output/' + filename, 'rb') as image_file:
         encoded_string = base64.b64encode(image_file.read())
     return encoded_string
 
@@ -40,7 +40,7 @@ def is_numeral(number):
 
 
 def extract_clausula_dia_habil(text):
-    # Extract "clausula dia habil" of the text
+    # Extract 'clausula dia habil' of the text
     text = clean_string(text)
     if 'clausula 3. acuerdo de dia habil\n' in text:
         start = text.find('clausula 3. acuerdo de dia habil\n')
@@ -50,9 +50,14 @@ def extract_clausula_dia_habil(text):
 
 def clean_string(string):
     # Clean string of tildes
-    return string.lower().replace("á", "a").replace("é", "e").replace("í", "i").replace("ó", "o").replace('ú', "u")
+    return string.lower().replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u')
 
 
 def is_similar(text1, text2):
     # Checking similarity of two texts
     return True if SequenceMatcher(None, text1, text2).ratio() > 0.7 else False
+
+
+def clean_number(number):
+    # Clean number of .,;:-
+    return number.replace('.', '').replace(',', '').replace(';', '').replace(':', '').replace('-', '')

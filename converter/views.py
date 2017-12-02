@@ -35,11 +35,19 @@ def index(request):
             for number in numbers:
                 if utils.is_nit(number):
                     print("NIT detectado")
+                    number = utils.clean_number(number)
+                    if document.nit == Document._meta.get_field('nit').get_default():
+                        document.nit = number
+                        document.save()
                     nit.append(number)
             if not nit:
                 for number in numbers:
                     if utils.is_nit_2(number):
                         print("NIT detectado")
+                        number = utils.clean_number(number)
+                        if document.nit == Document._meta.get_field('nit').get_default():
+                            document.nit = number
+                            document.save()
                         nit.append(number)
 
             # Get clausula dia habil
