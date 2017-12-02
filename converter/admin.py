@@ -5,7 +5,7 @@ from .models import Document
 
 @admin.register(Document)
 class AdminDocument(admin.ModelAdmin):
-    list_display = ('nit', 'document', 'uploaded_at')
+    list_display = ('nit', 'document', 'uploaded_at', 'analysis')
     actions = ['delete']
     list_display_links = None
     ordering = ('-uploaded_at',)
@@ -19,3 +19,9 @@ class AdminDocument(admin.ModelAdmin):
 
     document.short_description = 'document'
     document.allow_tags = True
+
+    def analysis(self, obj):
+        return """<a href=/{}> Analysis </a>""".format(obj.id)
+
+    analysis.short_description = 'analysis'
+    analysis.allow_tags = True
