@@ -22,7 +22,7 @@ class AdminDocument(admin.ModelAdmin):
     document.allow_tags = True
 
     def analysis(self, obj):
-        return """<a href=/{}> Analysis </a>""".format(obj.id)
+        return """<a target="_blank" href=/{}> Analysis </a>""".format(obj.id)
 
     analysis.short_description = 'analysis'
     analysis.allow_tags = True
