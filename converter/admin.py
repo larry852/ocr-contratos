@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Document
+
+
+@admin.register(Document)
+class AdminDocument(admin.ModelAdmin):
+    list_display = ('nit', 'file', 'uploaded_at')
