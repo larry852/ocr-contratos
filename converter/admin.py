@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from .models import Document
+from . import utils
 
 
 @admin.register(Document)
@@ -14,8 +15,8 @@ class AdminDocument(admin.ModelAdmin):
         return False
 
     def document(self, obj):
-        name = obj.file.name.replace("input/", "").replace(".pdf", "")
-        return """<a href={}> {} </a>""".format(obj.file.url, name)
+        name = utils.get_name_document(obj)
+        return """<a target="_blank" href={}> {} </a>""".format(obj.file.url, name)
 
     document.short_description = 'document'
     document.allow_tags = True

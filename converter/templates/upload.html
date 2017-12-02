@@ -6,6 +6,7 @@
 <!-- Page Content -->
 <div class="container">
 	<br>
+	{% if show_form %}
 	<form class="form-inline" role="form" method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 		<div class="form-group">
@@ -13,15 +14,16 @@
 		</div>
 		<button type="submit" class="btn btn-default">Upload</button>
 	</form>
+	{% endif %}
 	
 	{% if context %}
-	<h1 class="my-4 text-center text-lg-left">{{ context|length }} Pages</h1>	
+	<h6 class="my-4 text-center text-lg-left"><a target="_blank" href={{ document.url }}>{{ document.name }}</a> - {{ context|length }} Pages</h6>	
 	<div class="row text-center text-lg-left">
 		{% for page in context %}
 		<div class="col-lg-3 col-md-4 col-xs-6">
 			<div class="d-block mb-4 h-100">
 				<a href="{{ page.url }}">
-					<h5>Page {{forloop.counter}}</h5>
+					<h6>Page {{forloop.counter}}</h6>
 					<img class="img-fluid img-thumbnail" src="{{ page.url }}" alt="">
 				</a>
 				<textarea class="form-control" id="exampleFormControlTextarea1" rows="6">{{ page.text }}</textarea>

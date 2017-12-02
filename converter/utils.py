@@ -61,3 +61,8 @@ def is_similar(text1, text2):
 def clean_number(number):
     # Clean number of .,;:-
     return number.replace('.', '').replace(',', '').replace(';', '').replace(':', '').replace('-', '')
+
+
+def get_name_document(document):
+    # Get name of document
+    return document.file.name.replace("input/", "").replace(".pdf", "")
