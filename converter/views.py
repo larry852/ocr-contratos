@@ -21,7 +21,7 @@ def index(request):
 
         context = []
         for page in range(pages):
-            print("Procesando página " + str(page) + " ...")
+            print("\nProcesando página " + str(page + 1) + " ...")
 
             # Get OCR
             print("Extracción OCR")
@@ -31,23 +31,24 @@ def index(request):
             numbers = google.extract_numbers(text)
 
             # Get NIT
-            print("Extracción NIT")
             nit = []
             for number in numbers:
                 if utils.is_nit(number):
+                    print("NIT detectado")
                     nit.append(number)
             if not nit:
                 for number in numbers:
                     if utils.is_nit_2(number):
+                        print("NIT detectado")
                         nit.append(number)
 
             # Get clausula dia habil
-            print("Extracción clausula dia habil")
             text_clausula_dia_habil = utils.extract_clausula_dia_habil(text)
 
             # Get numeral
             numeral = []
             if text_clausula_dia_habil is not None:
+                print("Cláusula 3 detectada")
                 numbers_clausula = google.extract_numbers(text_clausula_dia_habil)
                 for number in numbers_clausula:
                     if utils.is_numeral(number):

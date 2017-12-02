@@ -21,6 +21,7 @@
 		<div class="col-lg-3 col-md-4 col-xs-6">
 			<div class="d-block mb-4 h-100">
 				<a href="{{ page.url }}">
+					<h3>Page {{forloop.counter}}</h3>
 					<img class="img-fluid img-thumbnail" src="{{ page.url }}" alt="">
 				</a>
 				<textarea class="form-control" id="exampleFormControlTextarea1" rows="6">{{ page.text }}</textarea>
@@ -28,7 +29,7 @@
 					<li>NIT: {{ number }}</li>
 				{% endfor %}
 				{% for number in page.numeral %}
-					<li>Clausula 3. acuerdo de dia habil: Numeral {{ number }}</li>
+					<li>Cláusula 3: Numeral {{ number }}</li>
 				{% endfor %}
 			</div>
 		</div>
