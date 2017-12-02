@@ -17,12 +17,13 @@
 	{% endif %}
 	
 	{% if context %}
-	<h6 class="my-4 text-center text-lg-left"><a target="_blank" href={{ document.url }}>{{ document.name }}</a> - {{ context|length }} Pages</h6>	
+	<h6 class="my-4 text-center text-lg-left"><a target="_blank" href={{ document.url }}>{{ document.name }}</a></h6>	
+	<h6>{{ context|length }} Pages</h6>
 	<div class="row text-center text-lg-left">
 		{% for page in context %}
 		<div class="col-lg-3 col-md-4 col-xs-6">
 			<div class="d-block mb-4 h-100">
-				<a href="{{ page.url }}">
+				<a target="_blank" href="{{ page.url }}">
 					<h6>Page {{forloop.counter}}</h6>
 					<img class="img-fluid img-thumbnail" src="{{ page.url }}" alt="">
 				</a>

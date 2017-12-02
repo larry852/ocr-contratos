@@ -15,8 +15,7 @@ class AdminDocument(admin.ModelAdmin):
         return False
 
     def document(self, obj):
-        name = utils.get_name_document(obj)
-        return """<a target="_blank" href={}> {} </a>""".format(obj.file.url, name)
+        return """<a target="_blank" href={}> {} </a>""".format(obj.file.url, utils.get_name_document(obj))
 
     document.short_description = 'document'
     document.allow_tags = True
