@@ -6,9 +6,7 @@ from .models import Document
 @admin.register(Document)
 class AdminDocument(admin.ModelAdmin):
     list_display = ('nit', 'document', 'uploaded_at')
-
-    def name(self, obj):
-        return obj.file.name
+    ordering = ('-uploaded_at',)
 
     def document(self, obj):
         name = obj.file.name.replace("input/", "").replace(".pdf", "")
