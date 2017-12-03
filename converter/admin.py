@@ -3,11 +3,13 @@ from django.contrib import admin
 from .models import Document
 from . import utils
 
+from . import reporter
+
 
 @admin.register(Document)
 class AdminDocument(admin.ModelAdmin):
     list_display = ('nit', 'document', 'uploaded_at', 'analysis')
-    actions = ['delete']
+    actions = ['delete','reporter']
     list_display_links = None
     ordering = ('-uploaded_at',)
 
@@ -22,6 +24,11 @@ class AdminDocument(admin.ModelAdmin):
 
     def analysis(self, obj):
         return """<a target="_blank" href=/{}> Analysis </a>""".format(obj.id)
-
+    
     analysis.short_description = 'analysis'
     analysis.allow_tags = True
+
+    def reporter(modeladmin, request, queryset):
+        return reporter.printDocuments(queryset)
+        
+    reporter.short_description = "Generar reporte"
