@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('[%(asctime)s] [%(message)s]')
 
 fh = logging.FileHandler('/contratomarco.log')
 fh.setLevel(logging.DEBUG)
