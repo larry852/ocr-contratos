@@ -5,6 +5,7 @@ DJANGODIR="/home/ubuntu/ocr-contratos/"
 USER=ubuntu
 GROUP=sudo
 NUM_WORKERS=3
+TIMEOUT=120
 DJANGO_WSGI_MODULE=contratos.wsgi
 echo "Starting $NAME as `whoami`"
 cd $VIRTUALENV
@@ -17,6 +18,7 @@ export DJANGO_SETTINGS_MODULE="contratos.settings"
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
 exec gunicorn ${DJANGO_WSGI_MODULE} \
 --workers $NUM_WORKERS \
+--timeout $TIMEOUT \
 --user=$USER --group=$GROUP \
 --log-level=debug \
 --bind=127.0.0.1:8000
