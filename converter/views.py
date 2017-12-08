@@ -2,6 +2,11 @@ from django.shortcuts import render
 from .models import Document
 from . import utils, google
 from django.shortcuts import get_object_or_404
+import logging
+
+
+# Get an instance of a logger
+logger = logging.getLogger(__name__)
 
 
 def index(request, document=None):
@@ -25,15 +30,15 @@ def index(request, document=None):
     path = document.file.path
 
     # Convert pdf to image
-    print("Conversión pdf a imagen ...")
+    logger.info("Conversión pdf a imagen ...")
     pages = utils.convert(path)
 
     context = []
     for page in range(pages):
-        print("\nProcesando página " + str(page + 1) + " ...")
+        logger.info("\nProcesando página " + str(page + 1) + " ...")
 
         # Get OCR
-        print("Extracción OCR")
+        logger.info("Extracción OCR")
         text = google.extract_OCR('page-{}.jpg'.format(page))
 
         # Get numbers
@@ -43,7 +48,7 @@ def index(request, document=None):
         nit = []
         for number in numbers:
             if utils.is_nit(number):
-                print("NIT detectado")
+                logger.info("NIT detectado")
                 number = utils.clean_number(number)
                 if document.nit == Document._meta.get_field('nit').get_default():
                     document.nit = number
@@ -52,7 +57,7 @@ def index(request, document=None):
         if not nit:
             for number in numbers:
                 if utils.is_nit_2(number):
-                    print("NIT detectado")
+                    logger.info("NIT detectado")
                     number = utils.clean_number(number)
                     if document.nit == Document._meta.get_field('nit').get_default():
                         document.nit = number
@@ -65,7 +70,7 @@ def index(request, document=None):
         # Get numeral
         numeral = []
         if text_clausula_dia_habil is not None:
-            print("Cláusula 3 detectada")
+            logger.info("Cláusula 3 detectada")
             numbers_clausula = google.extract_numbers(text_clausula_dia_habil)
             for number in numbers_clausula:
                 if utils.is_numeral(number):
