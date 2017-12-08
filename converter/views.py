@@ -3,30 +3,21 @@ from .models import Document
 from . import utils, google
 from django.shortcuts import get_object_or_404
 import logging
-import logging.config
-import sys
 
-LOGGING = {
-    'version': 1,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'stream': sys.stdout,
-        }
-    },
-    'root': {
-        'handlers': ['console'],
-        'level': 'INFO'
-    },
-    'formatters': {
-        'default': {
-            'format': '%(asctime)s | %(levelname)s | %(module)s | %(message)s',
-            'datefmt': '%Y-%m-%d %H:%M'
-        }
-    }
-}
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
-logging.config.dictConfig(LOGGING)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+fh = logging.FileHandler('contratomarco.log')
+fh.setLevel(logging.DEBUG)
+fh.setFormatter(formatter)
+logger.addHandler(fh)
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+ch.setFormatter(formatter)
+logger.addHandler(ch)
 
 
 def index(request, document=None):
@@ -50,15 +41,15 @@ def index(request, document=None):
     path = document.file.path
 
     # Convert pdf to image
-    logging.info("Conversión pdf a imagen ...")
+    logger.debug("Conversión pdf a imagen ...")
     pages = utils.convert(path)
 
     context = []
     for page in range(pages):
-        logging.info("\nProcesando página " + str(page + 1) + " ...")
+        logger.debug("\nProcesando página " + str(page + 1) + " ...")
 
         # Get OCR
-        logging.info("Extracción OCR")
+        logger.debug("Extracción OCR")
         text = google.extract_OCR('page-{}.jpg'.format(page))
 
         # Get numbers
@@ -68,7 +59,7 @@ def index(request, document=None):
         nit = []
         for number in numbers:
             if utils.is_nit(number):
-                logging.info("NIT detectado")
+                logger.debug("NIT detectado")
                 number = utils.clean_number(number)
                 if document.nit == Document._meta.get_field('nit').get_default():
                     document.nit = number
@@ -77,7 +68,7 @@ def index(request, document=None):
         if not nit:
             for number in numbers:
                 if utils.is_nit_2(number):
-                    logging.info("NIT detectado")
+                    logger.debug("NIT detectado")
                     number = utils.clean_number(number)
                     if document.nit == Document._meta.get_field('nit').get_default():
                         document.nit = number
@@ -90,7 +81,7 @@ def index(request, document=None):
         # Get numeral
         numeral = []
         if text_clausula_dia_habil is not None:
-            logging.info("Cláusula 3 detectada")
+            logger.debug("Cláusula 3 detectada")
             numbers_clausula = google.extract_numbers(text_clausula_dia_habil)
             for number in numbers_clausula:
                 if utils.is_numeral(number):
