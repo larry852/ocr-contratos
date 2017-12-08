@@ -1,5 +1,5 @@
 #!/bin/bash
-NAME="contratomarco"
+NAME="ocr-contratos"
 VIRTUALENV="/home/ocr-contratos/env/"
 DJANGODIR="/home/ocr-contratos/contratos/"
 USER=ubuntu
@@ -15,7 +15,7 @@ python3 manage.py migrate
 export REDZZA_SECRET_KEY="random_key:aasdafasf"
 export DJANGO_SETTINGS_MODULE="contratos.settings"
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
-exec gunicorn ${DJANGO_WSGI_MODULE} \
+sudo exec gunicorn ${DJANGO_WSGI_MODULE} \
 --workers $NUM_WORKERS \
 --user=$USER --group=$GROUP \
 --log-level=debug \
