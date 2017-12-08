@@ -15,7 +15,7 @@ python3 manage.py migrate
 export REDZZA_SECRET_KEY="random_key:aasdafasf"
 export DJANGO_SETTINGS_MODULE="contratos.settings"
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
-sudo exec gunicorn ${DJANGO_WSGI_MODULE} \
+exec gunicorn ${DJANGO_WSGI_MODULE} \
 --workers $NUM_WORKERS \
 --user=$USER --group=$GROUP \
 --log-level=debug \
