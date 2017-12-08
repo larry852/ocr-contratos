@@ -46,7 +46,7 @@ def index(request, document=None):
 
     context = []
     for page in range(pages):
-        print("\n")
+        logger.debug("\n")
         logger.debug("Procesando página " + str(page + 1) + " ...")
 
         # Get OCR
