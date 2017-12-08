@@ -1,0 +1,22 @@
+#!/bin/bash
+NAME="contratomarco"
+VIRTUALENV="/home/ocr-contratos/env/"
+DJANGODIR="/home/ocr-contratos/contratos/"
+USER=ubuntu
+GROUP=sudo
+NUM_WORKERS=3
+DJANGO_WSGI_MODULE=ocr-contratos.wsgi
+echo "Starting $NAME as `whoami`"
+cd $VIRTUALENV
+source bin/activate
+cd $DJANGODIR
+pip install -r requirements.txt
+python3 manage.py migrate
+export REDZZA_SECRET_KEY="random_key:aasdafasf"
+export DJANGO_SETTINGS_MODULE="contratos.settings"
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH
+exec gunicorn ${DJANGO_WSGI_MODULE} \
+--workers $NUM_WORKERS \
+--user=$USER --group=$GROUP \
+--log-level=debug \
+--bind=127.0.0.1:8000
