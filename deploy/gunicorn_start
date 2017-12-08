@@ -5,7 +5,7 @@ DJANGODIR="/home/ubuntu/ocr-contratos/"
 USER=ubuntu
 GROUP=sudo
 NUM_WORKERS=3
-TIMEOUT=600
+TIMEOUT=99999
 DJANGO_WSGI_MODULE=contratos.wsgi
 echo "Starting $NAME as `whoami`"
 cd $VIRTUALENV
