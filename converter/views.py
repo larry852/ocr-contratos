@@ -18,12 +18,7 @@ LOGGING = {
         'handlers': ['console'],
         'level': 'INFO'
     },
-    'formatters': {
-        'default': {
-            'format': '%(asctime)s | %(levelname)s | %(module)s | %(message)s',
-            'datefmt': '%Y-%m-%d %H:%M'
-        }
-    }
+
 }
 
 logging.config.dictConfig(LOGGING)
