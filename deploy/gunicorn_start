@@ -12,6 +12,7 @@ source bin/activate
 cd $DJANGODIR
 pip install -r requirements.txt
 python manage.py migrate
+export GOOGLE_APPLICATION_CREDENTIALS="/home/ubuntu/ocr-contratos/.contratomarco.json"
 export DJANGO_SETTINGS_MODULE="contratos.settings"
 export PYTHONPATH=$DJANGODIR:$PYTHONPATH
 exec gunicorn ${DJANGO_WSGI_MODULE} \
